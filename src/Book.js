@@ -1,6 +1,13 @@
 import React from 'react';
 
 export default class Book extends React.Component{
+    handleChange = (event) => {
+        this.props.update({
+            id: this.props.book.id,
+            shelf: event.target.value
+        })
+    }
+
     render() {
         return (
             <li>
@@ -13,7 +20,7 @@ export default class Book extends React.Component{
                                  backgroundImage: `url("${this.props.book.imageLinks.thumbnail}")`
                              }}></div>
                         <div className="book-shelf-changer">
-                            <select>
+                            <select onChange={this.handleChange} defaultValue={this.props.book.shelf}>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>

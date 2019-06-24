@@ -8,7 +8,7 @@ export default class BookShelf extends React.Component {
                 <h2 className="bookshelf-title">{this.props.shelf}</h2>
                 <div className="bookshelf-books">
                     <ol className="books-grid">
-                        {this.props.books.map((book) => <Book book={book} key={book.id}/>)}
+                        {this.props.books.map((book) => <Book book={book} key={book.id} update={this.props.update}/>)}
                     </ol>
                 </div>
             </div>
