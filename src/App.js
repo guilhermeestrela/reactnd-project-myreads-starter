@@ -7,7 +7,8 @@ import './App.css'
 
 export default class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    searchedBooks: []
   };
 
   componentDidMount() {
@@ -20,6 +21,14 @@ export default class BooksApp extends React.Component {
 
   updateBook = (book) => {
     BooksAPI.update(book, book.shelf).then(() => this.getBooks());
+  }
+
+  searchBooks = (query) => {
+    if (query) {
+      BooksAPI.search(query)
+          .then((books) => this.setState({searchedBooks: books}))
+          .catch((e) => console.error('Error searching books', e));
+    }
   }
 
   render() {
@@ -53,7 +62,11 @@ export default class BooksApp extends React.Component {
             </div>
         )}/>
         <Route path="/search" render={() => (
-            <Search />
+            <Search
+                books={this.state.searchedBooks}
+                search={this.searchBooks}
+                update={this.updateBook}
+            />
         )}/>
       </div>
     )
