@@ -23,26 +23,9 @@ export default class BooksApp extends React.Component {
   }
 
   searchBooks = (query) => {
-    if (query) {
-      BooksAPI.search(query)
-          .then((searchedBooks) => {
-              if (searchedBooks.length > 0 && !searchedBooks.error) {
-                  searchedBooks.map((searchedBook) => {
-                     this.state.books.filter((book) => {
-                         searchedBook.shelf = 'none';
-                         if (book.id === searchedBook.id) {
-                             return searchedBook.shelf = book.shelf;
-                         }
-                     });
-                  });
-              } else {
-                  searchedBooks = []
-              }
-
-              this.setState({books: searchedBooks})
-          })
+      return BooksAPI.search(query)
+          .then((searchedBooks) => searchedBooks)
           .catch((e) => console.error('Error searching books', e));
-    }
   }
 
   render() {

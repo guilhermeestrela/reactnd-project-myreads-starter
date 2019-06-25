@@ -4,17 +4,31 @@ import Book from "./Book";
 
 export default class Search extends React.Component {
     state = {
-        query: ''
+        query: '',
+        searchedBooks: []
     };
 
     handleChange = (event) => {
         this.setState({query: event.target.value});
-        this.props.search(event.target.value);
+        if (event.target.value) {
+            this.props.search(event.target.value)
+                .then((searchedBooks) => {
+                    if (searchedBooks.length > 0 && !searchedBooks.error) {
+                        searchedBooks.map((searchedBook) => {
+                            return this.props.books.filter((book) => book.id === searchedBook.id);
+                        })
+
+                        this.setState({searchedBooks});
+                    } else {
+                        this.setState({searchedBooks: []});
+                    }
+                });
+        }
     };
 
     render() {
-        let searchedBooks = this.props.books.length > 0 ? (
-            this.props.books.map((book) => <Book book={book} key={book.id} update={this.props.update}/>)
+        let searchedBooks = this.state.searchedBooks.length > 0 ? (
+            this.state.searchedBooks.map((book) => <Book book={book} key={book.id} update={this.props.update}/>)
         ) : 'Not found results! :(';
 
         return (
