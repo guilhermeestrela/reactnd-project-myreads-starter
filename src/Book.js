@@ -1,6 +1,8 @@
 import React from 'react';
 
 export default class Book extends React.Component{
+    backgroundImage = this.props.book.imageLinks ? this.props.book.imageLinks.thumbnail : '';
+
     handleChange = (event) => {
         this.props.update({
             id: this.props.book.id,
@@ -17,7 +19,7 @@ export default class Book extends React.Component{
                              style={{
                                  width: 128,
                                  height: 193,
-                                 backgroundImage: `url("${this.props.book.imageLinks.thumbnail}")`
+                                 backgroundImage: `url("${this.backgroundImage}")`
                              }}></div>
                         <div className="book-shelf-changer">
                             <select onChange={this.handleChange} defaultValue={this.props.book.shelf ? this.props.book.shelf : 'none'}>

@@ -7,8 +7,7 @@ import './App.css'
 
 export default class BooksApp extends React.Component {
   state = {
-    books: [],
-    searchedBooks: []
+    books: []
   };
 
   componentDidMount() {
@@ -26,7 +25,22 @@ export default class BooksApp extends React.Component {
   searchBooks = (query) => {
     if (query) {
       BooksAPI.search(query)
-          .then((books) => this.setState({searchedBooks: books}))
+          .then((searchedBooks) => {
+              if (searchedBooks.length > 0 && !searchedBooks.error) {
+                  searchedBooks.map((searchedBook) => {
+                     this.state.books.filter((book) => {
+                         searchedBook.shelf = 'none';
+                         if (book.id === searchedBook.id) {
+                             return searchedBook.shelf = book.shelf;
+                         }
+                     });
+                  });
+              } else {
+                  searchedBooks = []
+              }
+
+              this.setState({books: searchedBooks})
+          })
           .catch((e) => console.error('Error searching books', e));
     }
   }
@@ -63,7 +77,7 @@ export default class BooksApp extends React.Component {
         )}/>
         <Route path="/search" render={() => (
             <Search
-                books={this.state.searchedBooks}
+                books={this.state.books}
                 search={this.searchBooks}
                 update={this.updateBook}
             />
