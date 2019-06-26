@@ -15,7 +15,9 @@ export default class Search extends React.Component {
                 .then((searchedBooks) => {
                     if (searchedBooks.length > 0 && !searchedBooks.error) {
                         searchedBooks.map((searchedBook) => {
-                            return this.props.books.filter((book) => book.id === searchedBook.id);
+                            let match = this.props.books.filter((book) => book.id === searchedBook.id);
+                            
+                            return searchedBook.shelf = match.length ? match[0].shelf : 'none';
                         })
 
                         this.setState({searchedBooks});
